@@ -1,0 +1,198 @@
+<html>
+<canvas id="playground" width="800" height="600"></canvas>
+
+<script>
+var canvas;
+var canvasContext;
+var b_X = 50;
+var b_Y = 50;
+var speedX = 8;
+var speedY = 5;
+
+var user1Score = 0;
+var user2Score = 0;
+const WIN__SCORE = 3;
+
+var showingWinScreen = false;
+
+var p_1Y = 250;
+var p_2Y = 250;
+const P__THICKNESS = 7;
+const P__HEIGHT = 70;
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+    var mouseX = evt.clientX - rect.left - root.scrollLeft;
+    var mouseY = evt.clientY - rect.top - root.scrollTop;
+    return {
+        x:mouseX,
+        y:mouseY
+    };
+}
+
+function handleMouseClick(evt) {
+    if(showingWinScreen) {
+        user1Score = 0;
+        user2Score = 0;
+        showingWinScreen = false;
+    }
+}
+
+window.onload = function() {
+    canvas = document.getElementById('playground');
+    canvasContext = canvas.getContext('2d');
+
+	var framesPerSecond = 30;
+	//opening();
+    setInterval(function() {
+            moveEverything();
+            drawEverything();   
+        }, 1000/framesPerSecond);
+
+    canvas.addEventListener('mousedown', handleMouseClick);
+
+    canvas.addEventListener('mousemove',
+        function(evt) {
+            var mousePos = calculateMousePos(evt);
+            p_1Y = mousePos.y - (P__HEIGHT/2);
+        });
+}
+
+/*function opening(){
+	colorRect(0,0,canvas.width,canvas.height,'black');
+	canvasContext.fillStyle = 'red';
+    canvasContext.fillText("ARCADE", 350, 200);
+	setTimeout(function(){},2000)
+}*/
+function b_Reset() {
+    if(user1Score >= WIN__SCORE || user2Score >= WIN__SCORE) {
+
+        showingWinScreen = true;
+
+    }
+
+    speedX = -speedX;
+    b_X = canvas.width/2;
+    b_Y = canvas.height/2;
+}
+
+function computerMovement()
+{
+    var p_2YCenter = p_2Y + (P__HEIGHT/2);
+	if(p_2YCenter < b_Y - 35)
+	{
+        p_2Y = p_2Y + 6;
+	}
+	else if(p_2YCenter > b_Y + 35)
+	{
+        p_2Y = p_2Y - 6;
+    }
+}
+
+function moveEverything()
+{
+	if(showingWinScreen) 
+	{
+        return;
+    }
+
+    computerMovement();
+
+    b_X = b_X + speedX;
+    b_Y = b_Y + speedY;
+    
+	if(b_X < 0) 
+	{
+		if(b_Y > p_1Y && b_Y < p_1Y+P__HEIGHT) 
+		{
+            speedX = -speedX;
+            var deltaY = b_Y -(p_1Y+P__HEIGHT/2);
+            speedY = deltaY * 0.35;
+		}
+		else 
+		{
+            user2Score++; // must be BEFORE b_Reset()
+            b_Reset();
+        }
+    }
+	if(b_X > canvas.width) 
+	{
+		if(b_Y > p_2Y &&  b_Y < p_2Y+P__HEIGHT)
+		{
+            speedX = -speedX;
+            var deltaY = b_Y -(p_2Y+P__HEIGHT/2);
+            speedY = deltaY * 0.35;
+		}
+		else
+		{
+            user1Score++; // must be BEFORE b_Reset()
+            b_Reset();    
+        }
+    }
+	if(b_Y < 0)
+	{
+        speedY = -speedY;
+    }
+	if(b_Y > canvas.height) 
+	{
+        speedY = -speedY;
+    }
+}
+
+function drawNet() 
+{
+	for(var i=0;i<canvas.height;i+=40) 
+	{
+        colorRect(canvas.width/2-1,i,2,20,'white');
+    }
+}
+
+function drawEverything() 
+{
+    // next line blanks out the screen with black
+    colorRect(0,0,canvas.width,canvas.height,'black');
+
+	if(showingWinScreen) 
+	{
+        canvasContext.fillStyle = 'white';
+        if(user1Score >= WIN__SCORE) {
+            canvasContext.fillText("Left User Won", 350, 200);
+        } else if(user2Score >= WIN__SCORE) {
+            canvasContext.fillText("Right User Won", 350, 200);
+        }
+
+        canvasContext.fillText("Click for Rematch", 350, 500);
+        return;
+    }
+
+    drawNet();
+
+    // this is left user p_
+    colorRect(0,p_1Y,P__THICKNESS,P__HEIGHT,'white');
+
+    // this is right computer p_
+    colorRect(canvas.width-P__THICKNESS,p_2Y,P__THICKNESS,P__HEIGHT,'white');
+
+    // next line draws the b_
+    colorCircle(b_X, b_Y, 10, 'white');
+
+    canvasContext.fillText(user1Score, 100, 100);
+    canvasContext.fillText(user2Score, canvas.width-100, 100);
+}
+
+function colorCircle(centerX, centerY, radius, drawColor) {
+    canvasContext.fillStyle = drawColor;
+    canvasContext.beginPath();
+    canvasContext.arc(centerX, centerY, radius, 0,Math.PI*2,true);
+    canvasContext.fill();
+}
+
+function colorRect(leftX,topY, width,height, drawColor) {
+    canvasContext.fillStyle = drawColor;
+    canvasContext.fillRect(leftX,topY, width,height);
+}
+
+</script>
+</html>
+
