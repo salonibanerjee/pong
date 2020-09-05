@@ -1,2 +1,2 @@
 # game
-first_js_game
+My first JavaScript game !
