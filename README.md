@@ -1,6 +1,6 @@
-#Pong !
+<h1 align="center">Pong !</h1>
 <p align="center">
-My first JavaScript game !
+My first JavaScript game !<br/>
 Single player
 </p> 
 
