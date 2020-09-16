@@ -6,4 +6,4 @@ Single player
 
 
 
-<center>![pong_preview](https://raw.githubusercontent.com/salonibanerjee/salonibanerjee.github.io/master/images/i-pong.gif)</center> 
+<p align="center"><img src="https://raw.githubusercontent.com/salonibanerjee/salonibanerjee.github.io/master/images/i-pong.gif"/></p> 
