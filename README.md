@@ -1,4 +1,4 @@
-# game
+# pong!
 My first JavaScript game !
 
 
