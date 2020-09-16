@@ -1,3 +1,3 @@
 # game
 My first JavaScript game !
-![alt-text](link)
+![pong_preview](https://raw.githubusercontent.com/salonibanerjee/salonibanerjee.github.io/master/images/i-pong.gif)
