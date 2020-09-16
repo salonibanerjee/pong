@@ -1,7 +1,7 @@
 <h1 align="center">Pong !</h1>
 <p align="center">
 My first JavaScript game !<br/>
-Single player
+Single player interactive classic arcade
 </p> 
 
 
